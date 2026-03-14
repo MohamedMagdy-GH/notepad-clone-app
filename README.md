@@ -6,8 +6,11 @@ Notepad Clone is a lightweight, high-performance text editor that is designed fo
 * .Net 10
 * WinForms
 
+## Features
+* Opening/saving/editing files
+* Allows opening files by dragging them on the '.exe', or through the command line
+* Light/dark mode support
+
 ## Upcoming Changes
-* Adding "Save" functionality, with file-path persistence
-* Adding state intelligence (asterisk system to track unsaved changes).
-* Adding key shortcuts
+* Adding more key shortcuts
 * Creating a WPF user interface for the application
