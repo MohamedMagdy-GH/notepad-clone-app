@@ -9,6 +9,7 @@ Notepad Clone is a lightweight, high-performance text editor that is designed fo
 ## Features
 * Opening/saving/editing files
 * Allows opening files by dragging them on the '.exe', or through the command line
+* Unsaved change asterisk indicator
 * Light/dark mode support
 
 ## Upcoming Changes
