@@ -11,20 +11,20 @@ public partial class Dashboard : Form
     private string _currentFilePath = string.Empty;
     private string _currentFileName = "Untitled";
 
-    bool isTextChanged = false;
+    private bool _isTextChanged = false;
+    private bool _isLoading = false;
 
     public Dashboard()
     {
         InitializeComponent();
-
+        InitializeTheme();
         HandleCommandLineArgs();
-
-        ApplyTheme();
-
         UpdateTitle();
     }
 
-    private static void ApplyTheme()
+    #region Startup Logic
+
+    private void InitializeTheme()
     {
         int savedTheme = Properties.Settings.Default.AppTheme;
         SystemColorMode mode = (SystemColorMode)savedTheme;
@@ -43,17 +43,12 @@ public partial class Dashboard : Form
 
     private void LoadFromStart(string path)
     {
-        try
-        {
-            mainText.Text = _fileHandler.OpenFile(path);
-
-            UpdateFileState(path);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Error opening file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
+        HandleFileOpening(path);
     }
+
+    #endregion
+
+    #region Events
 
     private void openToolStripMenuItem_Click(object sender, EventArgs e)
     {
@@ -64,18 +59,26 @@ public partial class Dashboard : Form
         };
 
         // TODO: Add a confirmation dialog if there are unsaved changes, to prevent data loss.
-        // TODO: Extract file opening logic to a separate method, to use it in the LoadFromStart method as well. (optional)
         if (openFileDialog.ShowDialog() == DialogResult.OK)
         {
-            mainText.Text = _fileHandler.OpenFile(openFileDialog.FileName);
+            HandleFileOpening(openFileDialog.FileName);
+        }
+    }
 
-            UpdateFileState(openFileDialog.FileName);
+    private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        if (string.IsNullOrWhiteSpace(_currentFilePath))
+        {
+            saveAsToolStripMenuItem_Click(sender, e);
+        }
+        else
+        {
+            HandleFileSaving(_currentFilePath);
         }
     }
 
     private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        // TODO: extract save logic to a separate method, to implement the "Save" option in the future.
         using SaveFileDialog saveFileDialog = new()
         {
             Filter = "Text Files|*.txt|All Files|*.*",
@@ -85,41 +88,20 @@ public partial class Dashboard : Form
 
         if (saveFileDialog.ShowDialog() == DialogResult.OK)
         {
-            try
-            {
-                _fileHandler.SaveFile(saveFileDialog.FileName, mainText.Text);
-
-                isTextChanged = false;
-
-                UpdateFileState(saveFileDialog.FileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error saving file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            HandleFileSaving(saveFileDialog.FileName);
         }
-    }
-
-    private void UpdateFileState(string path)
-    {
-        _currentFilePath = path;
-        _currentFileName = Path.GetFileName(path);
-
-        UpdateTitle();
-    }
-
-    private void UpdateTitle()
-    {
-        string prefix = isTextChanged ? "*" : "";
-        this.Text = $"{prefix}{_currentFileName} - {DefaultTitle}";
     }
 
     private void mainText_TextChanged(object sender, EventArgs e)
     {
-        // TODO: Add asterisk to title if there are unsaved changes, and remove it when the file is saved.
-        if (isTextChanged == false)
+        if (_isLoading)
         {
-            isTextChanged = true;
+            return;
+        }
+
+        if (_isTextChanged == false)
+        {
+            _isTextChanged = true;
             UpdateTitle();
         }
 
@@ -151,13 +133,113 @@ public partial class Dashboard : Form
         ApplyTheme(SystemColorMode.Dark);
     }
 
+    #endregion
+
+    #region Helper Methods
+
+    private void UpdateFileState(string path)
+    {
+        _currentFilePath = path;
+        _currentFileName = Path.GetFileName(path);
+
+        UpdateTitle();
+    }
+
+    private void UpdateTitle()
+    {
+        string prefix = _isTextChanged ? "*" : "";
+        this.Text = $"{prefix}{_currentFileName} - {DefaultTitle}";
+    }
+
     private void ApplyTheme(SystemColorMode theme)
     {
+        if (WarnUser("Changing the theme will discard unsaved changes. Do you want to continue?", "Confirm Theme Change") == false)
+        {
+            return;
+        }
+
         Application.SetColorMode(theme);
 
         Properties.Settings.Default.AppTheme = (int)theme;
         Properties.Settings.Default.Save();
 
-        Application.Restart();
+        if (!string.IsNullOrWhiteSpace(_currentFilePath))
+        {
+            System.Diagnostics.Process.Start(Application.ExecutablePath, $"\"{_currentFilePath}\"");
+            Application.Exit();
+        }
+        else
+        {
+            Application.Restart();
+        }
     }
+
+    private bool WarnUser(
+        string message = "Doing this will discard unsaved changes. Do you want to continue?",
+        string caption = "Confirm Action"
+    )
+    {
+        if (_isTextChanged)
+        {
+            DialogResult result = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (result == DialogResult.No)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void HandleFileOpening(string path)
+    {
+        try
+        {
+            _isLoading = true;
+            mainText.Text = _fileHandler.OpenFile(path);
+
+            mainText.SelectionStart = mainText.Text.Length;
+            mainText.SelectionLength = 0;
+
+            _isTextChanged = false;
+            UpdateFileState(path);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error opening file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+
+        try
+        {
+            mainText.Text = _fileHandler.OpenFile(path);
+            UpdateFileState(path);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error opening file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void HandleFileSaving(string path)
+    {
+        try
+        {
+            _fileHandler.SaveFile(path, mainText.Text);
+
+            _isTextChanged = false;
+
+            UpdateFileState(path);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error saving file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    #endregion
+
 }
