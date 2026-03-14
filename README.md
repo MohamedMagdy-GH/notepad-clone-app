@@ -10,3 +10,4 @@ Notepad Clone is a lightweight, high-performance text editor that is designed fo
 * Adding "Save" functionality, with file-path persistence
 * Adding state intelligence (asterisk system to track unsaved changes).
 * Adding key shortcuts
+* Creating a WPF user interface for the application
