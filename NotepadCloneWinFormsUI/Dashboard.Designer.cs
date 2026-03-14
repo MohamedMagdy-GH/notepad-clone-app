@@ -124,6 +124,7 @@
             mainText.BorderStyle = BorderStyle.None;
             mainText.Dock = DockStyle.Fill;
             mainText.Location = new Point(0, 38);
+            mainText.MaxLength = 0;
             mainText.Multiline = true;
             mainText.Name = "mainText";
             mainText.ScrollBars = ScrollBars.Both;

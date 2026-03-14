@@ -212,16 +212,6 @@ public partial class Dashboard : Form
         {
             _isLoading = false;
         }
-
-        try
-        {
-            mainText.Text = _fileHandler.OpenFile(path);
-            UpdateFileState(path);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Error opening file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
     }
 
     private void HandleFileSaving(string path)
