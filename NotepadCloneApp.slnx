@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="NotepadCloneLibrary/NotepadCloneLibrary.csproj" />
+  <Project Path="NotepadCloneWinFormsUI/NotepadCloneWinFormsUI.csproj" />
+</Solution>
