@@ -13,6 +13,7 @@ public partial class Dashboard : Form
 
     private bool _isTextChanged = false;
     private bool _isLoading = false;
+    private bool _isChangingTheme = false;
 
     public Dashboard()
     {
@@ -183,6 +184,11 @@ public partial class Dashboard : Form
 
     private void Dashboard_FormClosing(object sender, FormClosingEventArgs e)
     {
+        if (_isChangingTheme)
+        {
+            return;
+        }
+
         if (_isTextChanged == true)
         {
             DialogResult result = MessageBox.Show("You have unsaved changes. Do you want to save before exiting?", "Confirm Exit", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
@@ -219,6 +225,8 @@ public partial class Dashboard : Form
         {
             return;
         }
+
+        _isChangingTheme = true;
 
         Application.SetColorMode(theme);
 
