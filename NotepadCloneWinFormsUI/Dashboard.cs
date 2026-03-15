@@ -1,6 +1,6 @@
 using NotepadCloneLibrary;
 
-namespace NotepadCloneWinFormsUI;
+namespace NotepadClone;
 
 public partial class Dashboard : Form
 {
@@ -23,7 +23,6 @@ public partial class Dashboard : Form
     }
 
     #region Startup Logic
-
     private void InitializeTheme()
     {
         int savedTheme = Properties.Settings.Default.AppTheme;
@@ -45,20 +44,22 @@ public partial class Dashboard : Form
     {
         HandleFileOpening(path);
     }
-
     #endregion
 
     #region Events
-
     private void openToolStripMenuItem_Click(object sender, EventArgs e)
     {
+        DialogResult result = MessageBox.Show("Opening a new file will discard unsaved changes. Do you want to continue?", "Confirm Open", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+        if (result == DialogResult.No)
+        {
+            return;
+        }
+
         using OpenFileDialog openFileDialog = new()
         {
             Filter = "Text Files|*.txt|All Files|*.*",
             DefaultExt = "txt"
         };
-
-        // TODO: Add a confirmation dialog if there are unsaved changes, to prevent data loss.
         if (openFileDialog.ShowDialog() == DialogResult.OK)
         {
             HandleFileOpening(openFileDialog.FileName);
@@ -133,10 +134,71 @@ public partial class Dashboard : Form
         ApplyTheme(SystemColorMode.Dark);
     }
 
+    private void findToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        if (mainText.SelectionLength == 0 && mainText.SelectionStart == mainText.TextLength)
+        {
+            mainText.SelectionStart = 0;
+        }
+
+        findPanel.Visible ^= true;
+    }
+
+    private void findNext_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            (int start, int length) = _fileHandler.FindNext(
+                mainText.Text,
+                findQuery.Text,
+                mainText.SelectionStart + mainText.SelectionLength,
+                wrapAround.Checked,
+                useRegularExpressions.Checked
+            );
+
+            if (start != -1 && length != -1)
+            {
+                mainText.SelectionStart = start;
+                mainText.SelectionLength = length;
+                mainText.Focus();
+            }
+            else
+            {
+                MessageBox.Show("No matches found.", "Find", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                mainText.SelectionStart = 0;
+                mainText.SelectionLength = 0;
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Find", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+    }
+
+    private void closeFindPanel_Click(object sender, EventArgs e)
+    {
+        findPanel.Visible = false;
+    }
+
+    private void Dashboard_FormClosing(object sender, FormClosingEventArgs e)
+    {
+        if (_isTextChanged == true)
+        {
+            DialogResult result = MessageBox.Show("You have unsaved changes. Do you want to save before exiting?", "Confirm Exit", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+            if (result == DialogResult.Yes)
+            {
+                saveToolStripMenuItem_Click(sender, e);
+            }
+            else if (result == DialogResult.Cancel)
+            {
+                e.Cancel = true;
+            }
+        }
+    }
     #endregion
 
     #region Helper Methods
-
     private void UpdateFileState(string path)
     {
         _currentFilePath = path;
@@ -229,7 +291,5 @@ public partial class Dashboard : Form
             MessageBox.Show($"Error saving file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
-
-    #endregion
-
+    #endregion 
 }

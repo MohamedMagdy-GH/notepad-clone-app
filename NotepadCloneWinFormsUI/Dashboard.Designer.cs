@@ -1,4 +1,4 @@
-﻿namespace NotepadCloneWinFormsUI
+﻿namespace NotepadClone
 {
     partial class Dashboard
     {
@@ -33,24 +33,35 @@
             openToolStripMenuItem = new ToolStripMenuItem();
             saveToolStripMenuItem = new ToolStripMenuItem();
             saveAsToolStripMenuItem = new ToolStripMenuItem();
+            editToolStripMenuItem = new ToolStripMenuItem();
+            findToolStripMenuItem = new ToolStripMenuItem();
             viewToolStripMenuItem = new ToolStripMenuItem();
             themeToolStripMenuItem = new ToolStripMenuItem();
             lightToolStripMenuItem = new ToolStripMenuItem();
             darkToolStripMenuItem = new ToolStripMenuItem();
-            systemDefaultToolStripMenuItem = new ToolStripMenuItem();
+            systemToolStripMenuItem = new ToolStripMenuItem();
             mainText = new TextBox();
+            findPanel = new Panel();
+            findNext = new Button();
+            closeFindPanel = new Button();
+            wrapAround = new CheckBox();
+            findQuery = new TextBox();
+            findLabel = new Label();
+            useRegularExpressions = new CheckBox();
             menuStrip.SuspendLayout();
+            findPanel.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip
             // 
+            menuStrip.BackColor = Color.WhiteSmoke;
             menuStrip.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             menuStrip.ImageScalingSize = new Size(20, 20);
-            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, viewToolStripMenuItem });
+            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, viewToolStripMenuItem });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Padding = new Padding(8, 3, 0, 3);
-            menuStrip.Size = new Size(795, 38);
+            menuStrip.Size = new Size(895, 38);
             menuStrip.TabIndex = 1;
             menuStrip.Text = "menuStrip1";
             // 
@@ -84,6 +95,21 @@
             saveAsToolStripMenuItem.Text = "Save as";
             saveAsToolStripMenuItem.Click += saveAsToolStripMenuItem_Click;
             // 
+            // editToolStripMenuItem
+            // 
+            editToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { findToolStripMenuItem });
+            editToolStripMenuItem.Name = "editToolStripMenuItem";
+            editToolStripMenuItem.Size = new Size(60, 32);
+            editToolStripMenuItem.Text = "Edit";
+            // 
+            // findToolStripMenuItem
+            // 
+            findToolStripMenuItem.Name = "findToolStripMenuItem";
+            findToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.F;
+            findToolStripMenuItem.Size = new Size(203, 32);
+            findToolStripMenuItem.Text = "Find";
+            findToolStripMenuItem.Click += findToolStripMenuItem_Click;
+            // 
             // viewToolStripMenuItem
             // 
             viewToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { themeToolStripMenuItem });
@@ -93,7 +119,7 @@
             // 
             // themeToolStripMenuItem
             // 
-            themeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { lightToolStripMenuItem, darkToolStripMenuItem, systemDefaultToolStripMenuItem });
+            themeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { lightToolStripMenuItem, darkToolStripMenuItem, systemToolStripMenuItem });
             themeToolStripMenuItem.Name = "themeToolStripMenuItem";
             themeToolStripMenuItem.Size = new Size(156, 32);
             themeToolStripMenuItem.Text = "Theme";
@@ -101,51 +127,145 @@
             // lightToolStripMenuItem
             // 
             lightToolStripMenuItem.Name = "lightToolStripMenuItem";
-            lightToolStripMenuItem.Size = new Size(228, 32);
+            lightToolStripMenuItem.Size = new Size(247, 32);
             lightToolStripMenuItem.Text = "Light Mode";
             lightToolStripMenuItem.Click += lightToolStripMenuItem_Click;
             // 
             // darkToolStripMenuItem
             // 
             darkToolStripMenuItem.Name = "darkToolStripMenuItem";
-            darkToolStripMenuItem.Size = new Size(228, 32);
+            darkToolStripMenuItem.Size = new Size(247, 32);
             darkToolStripMenuItem.Text = "Dark Mode";
             darkToolStripMenuItem.Click += darkToolStripMenuItem_Click;
             // 
-            // systemDefaultToolStripMenuItem
+            // systemToolStripMenuItem
             // 
-            systemDefaultToolStripMenuItem.Name = "systemDefaultToolStripMenuItem";
-            systemDefaultToolStripMenuItem.Size = new Size(228, 32);
-            systemDefaultToolStripMenuItem.Text = "System Default";
-            systemDefaultToolStripMenuItem.Click += systemDefaultToolStripMenuItem_Click;
+            systemToolStripMenuItem.Name = "systemToolStripMenuItem";
+            systemToolStripMenuItem.Size = new Size(247, 32);
+            systemToolStripMenuItem.Text = "Sync with System";
+            systemToolStripMenuItem.Click += systemDefaultToolStripMenuItem_Click;
             // 
             // mainText
             // 
             mainText.BorderStyle = BorderStyle.None;
             mainText.Dock = DockStyle.Fill;
-            mainText.Location = new Point(0, 38);
+            mainText.Location = new Point(0, 71);
             mainText.MaxLength = 0;
             mainText.Multiline = true;
             mainText.Name = "mainText";
             mainText.ScrollBars = ScrollBars.Both;
-            mainText.Size = new Size(795, 472);
+            mainText.Size = new Size(895, 515);
             mainText.TabIndex = 2;
             mainText.TextChanged += mainText_TextChanged;
+            // 
+            // findPanel
+            // 
+            findPanel.BackColor = Color.WhiteSmoke;
+            findPanel.Controls.Add(useRegularExpressions);
+            findPanel.Controls.Add(findNext);
+            findPanel.Controls.Add(closeFindPanel);
+            findPanel.Controls.Add(wrapAround);
+            findPanel.Controls.Add(findQuery);
+            findPanel.Controls.Add(findLabel);
+            findPanel.Dock = DockStyle.Top;
+            findPanel.Location = new Point(0, 38);
+            findPanel.Name = "findPanel";
+            findPanel.Size = new Size(895, 33);
+            findPanel.TabIndex = 3;
+            findPanel.Visible = false;
+            // 
+            // findNext
+            // 
+            findNext.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            findNext.BackColor = Color.WhiteSmoke;
+            findNext.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            findNext.Location = new Point(453, 2);
+            findNext.Name = "findNext";
+            findNext.Size = new Size(96, 28);
+            findNext.TabIndex = 5;
+            findNext.Text = "Find Next";
+            findNext.UseVisualStyleBackColor = false;
+            findNext.Click += findNext_Click;
+            // 
+            // closeFindPanel
+            // 
+            closeFindPanel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            closeFindPanel.BackColor = Color.WhiteSmoke;
+            closeFindPanel.FlatAppearance.BorderSize = 0;
+            closeFindPanel.FlatStyle = FlatStyle.Flat;
+            closeFindPanel.Font = new Font("Segoe UI", 10.2F);
+            closeFindPanel.Location = new Point(849, 1);
+            closeFindPanel.Name = "closeFindPanel";
+            closeFindPanel.Size = new Size(34, 28);
+            closeFindPanel.TabIndex = 4;
+            closeFindPanel.Text = "✖";
+            closeFindPanel.UseVisualStyleBackColor = false;
+            closeFindPanel.Click += closeFindPanel_Click;
+            // 
+            // wrapAround
+            // 
+            wrapAround.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            wrapAround.AutoSize = true;
+            wrapAround.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            wrapAround.Location = new Point(723, 5);
+            wrapAround.Name = "wrapAround";
+            wrapAround.Size = new Size(120, 24);
+            wrapAround.TabIndex = 2;
+            wrapAround.Text = "Wrap Around";
+            wrapAround.TextAlign = ContentAlignment.MiddleCenter;
+            wrapAround.UseVisualStyleBackColor = true;
+            // 
+            // findQuery
+            // 
+            findQuery.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            findQuery.BorderStyle = BorderStyle.None;
+            findQuery.Font = new Font("Segoe UI", 10.2F);
+            findQuery.Location = new Point(55, 4);
+            findQuery.Name = "findQuery";
+            findQuery.Size = new Size(392, 23);
+            findQuery.TabIndex = 1;
+            // 
+            // findLabel
+            // 
+            findLabel.AutoSize = true;
+            findLabel.Font = new Font("Segoe UI", 10.2F);
+            findLabel.Location = new Point(3, 4);
+            findLabel.Name = "findLabel";
+            findLabel.Size = new Size(46, 23);
+            findLabel.TabIndex = 0;
+            findLabel.Text = "Find:";
+            // 
+            // useRegularExpressions
+            // 
+            useRegularExpressions.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            useRegularExpressions.AutoSize = true;
+            useRegularExpressions.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            useRegularExpressions.Location = new Point(555, 5);
+            useRegularExpressions.Name = "useRegularExpressions";
+            useRegularExpressions.Size = new Size(162, 24);
+            useRegularExpressions.TabIndex = 6;
+            useRegularExpressions.Text = "Regular Expressions";
+            useRegularExpressions.TextAlign = ContentAlignment.MiddleCenter;
+            useRegularExpressions.UseVisualStyleBackColor = true;
             // 
             // Dashboard
             // 
             AutoScaleDimensions = new SizeF(11F, 28F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(795, 510);
+            ClientSize = new Size(895, 586);
             Controls.Add(mainText);
+            Controls.Add(findPanel);
             Controls.Add(menuStrip);
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             MainMenuStrip = menuStrip;
             Margin = new Padding(4);
             Name = "Dashboard";
             Text = "Notepad Clone by Muhammad Magdi";
+            FormClosing += Dashboard_FormClosing;
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();
+            findPanel.ResumeLayout(false);
+            findPanel.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -160,7 +280,16 @@
         private ToolStripMenuItem themeToolStripMenuItem;
         private ToolStripMenuItem lightToolStripMenuItem;
         private ToolStripMenuItem darkToolStripMenuItem;
-        private ToolStripMenuItem systemDefaultToolStripMenuItem;
+        private ToolStripMenuItem systemToolStripMenuItem;
         private ToolStripMenuItem saveToolStripMenuItem;
+        private ToolStripMenuItem editToolStripMenuItem;
+        private ToolStripMenuItem findToolStripMenuItem;
+        private Panel findPanel;
+        private CheckBox wrapAround;
+        private TextBox findQuery;
+        private Label findLabel;
+        private Button closeFindPanel;
+        private Button findNext;
+        private CheckBox useRegularExpressions;
     }
 }

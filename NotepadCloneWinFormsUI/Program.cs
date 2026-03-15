@@ -1,4 +1,4 @@
-namespace NotepadCloneWinFormsUI
+namespace NotepadClone
 {
     internal static class Program
     {

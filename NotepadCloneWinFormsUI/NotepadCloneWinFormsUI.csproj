@@ -6,10 +6,17 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+	<RootNamespace>NotepadClone</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NotepadCloneLibrary\NotepadCloneLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<None Include="Properties\PublishProfiles\FolderProfile.pubxml">
+      <IsPublishProfile>true</IsPublishProfile>
+      </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -26,5 +33,13 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+	
+   <PropertyGroup>
+	  <AssemblyName>NotepadClone</AssemblyName>
+      <AssemblyTitle>Notepad Clone by Muhammad Magdi</AssemblyTitle>
+	  <Product>Notepad Clone by Muhammad Magdi</Product>
+	  <Description>A lightweight text editor for daily use.</Description>
+	  <StartupObject>NotepadClone.Program</StartupObject>
+   </PropertyGroup>
 
 </Project>
