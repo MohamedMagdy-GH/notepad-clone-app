@@ -1,5 +1,5 @@
 # Notepad Clone
-Notepad Clone is a lightweight, high-performance text editor that is designed for document management and a distraction-free writing experience.
+Notepad Clone is a lightweight, high-performance text editor that is designed for daily use. Ideal for document management and a distraction-free, responsive writing experience, this tool delivers the perfect balance between speed and functionality.
 
 ## Technologies Used
 * C#
