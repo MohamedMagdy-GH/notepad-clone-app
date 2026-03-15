@@ -42,19 +42,19 @@
             systemToolStripMenuItem = new ToolStripMenuItem();
             mainText = new TextBox();
             findPanel = new Panel();
+            useRegularExpressions = new CheckBox();
             findNext = new Button();
             closeFindPanel = new Button();
             wrapAround = new CheckBox();
             findQuery = new TextBox();
             findLabel = new Label();
-            useRegularExpressions = new CheckBox();
             menuStrip.SuspendLayout();
             findPanel.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip
             // 
-            menuStrip.BackColor = Color.WhiteSmoke;
+            menuStrip.BackColor = SystemColors.Control;
             menuStrip.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             menuStrip.ImageScalingSize = new Size(20, 20);
             menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, viewToolStripMenuItem });
@@ -147,6 +147,7 @@
             // 
             // mainText
             // 
+            mainText.BackColor = SystemColors.Window;
             mainText.BorderStyle = BorderStyle.None;
             mainText.Dock = DockStyle.Fill;
             mainText.Location = new Point(0, 71);
@@ -160,7 +161,7 @@
             // 
             // findPanel
             // 
-            findPanel.BackColor = Color.WhiteSmoke;
+            findPanel.BackColor = SystemColors.Control;
             findPanel.Controls.Add(useRegularExpressions);
             findPanel.Controls.Add(findNext);
             findPanel.Controls.Add(closeFindPanel);
@@ -173,6 +174,19 @@
             findPanel.Size = new Size(895, 33);
             findPanel.TabIndex = 3;
             findPanel.Visible = false;
+            // 
+            // useRegularExpressions
+            // 
+            useRegularExpressions.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            useRegularExpressions.AutoSize = true;
+            useRegularExpressions.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            useRegularExpressions.Location = new Point(555, 5);
+            useRegularExpressions.Name = "useRegularExpressions";
+            useRegularExpressions.Size = new Size(162, 24);
+            useRegularExpressions.TabIndex = 6;
+            useRegularExpressions.Text = "Regular Expressions";
+            useRegularExpressions.TextAlign = ContentAlignment.MiddleCenter;
+            useRegularExpressions.UseVisualStyleBackColor = true;
             // 
             // findNext
             // 
@@ -192,9 +206,9 @@
             closeFindPanel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             closeFindPanel.BackColor = Color.WhiteSmoke;
             closeFindPanel.FlatAppearance.BorderSize = 0;
-            closeFindPanel.FlatStyle = FlatStyle.Flat;
+            closeFindPanel.FlatStyle = FlatStyle.System;
             closeFindPanel.Font = new Font("Segoe UI", 10.2F);
-            closeFindPanel.Location = new Point(849, 1);
+            closeFindPanel.Location = new Point(849, 3);
             closeFindPanel.Name = "closeFindPanel";
             closeFindPanel.Size = new Size(34, 28);
             closeFindPanel.TabIndex = 4;
@@ -234,19 +248,6 @@
             findLabel.Size = new Size(46, 23);
             findLabel.TabIndex = 0;
             findLabel.Text = "Find:";
-            // 
-            // useRegularExpressions
-            // 
-            useRegularExpressions.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            useRegularExpressions.AutoSize = true;
-            useRegularExpressions.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            useRegularExpressions.Location = new Point(555, 5);
-            useRegularExpressions.Name = "useRegularExpressions";
-            useRegularExpressions.Size = new Size(162, 24);
-            useRegularExpressions.TabIndex = 6;
-            useRegularExpressions.Text = "Regular Expressions";
-            useRegularExpressions.TextAlign = ContentAlignment.MiddleCenter;
-            useRegularExpressions.UseVisualStyleBackColor = true;
             // 
             // Dashboard
             // 
