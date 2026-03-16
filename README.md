@@ -18,3 +18,6 @@ Notepad Clone is a lightweight, high-performance text editor that is designed fo
 * Adding auto-saving
 * Implementing Replace functionality
 * Creating a WPF user interface for the application
+
+## Attributes
+<a href="https://www.flaticon.com/free-icons/note" title="note icons">Note icons created by Freepik - Flaticon</a>
