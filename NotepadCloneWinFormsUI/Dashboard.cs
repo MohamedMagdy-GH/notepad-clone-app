@@ -48,6 +48,11 @@ public partial class Dashboard : Form
     #endregion
 
     #region Events
+    private void Dashboard_Load(object sender, EventArgs e)
+    {
+        UpdateStatus("Ready");
+    }
+
     private void openToolStripMenuItem_Click(object sender, EventArgs e)
     {
         if (_isTextChanged)
@@ -168,13 +173,15 @@ public partial class Dashboard : Form
                 mainText.SelectionStart = start;
                 mainText.SelectionLength = length;
                 mainText.Focus();
+
+                UpdateStatus($"Match found at position {start}");
             }
             else
             {
-                MessageBox.Show("No matches found.", "Find", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
                 mainText.SelectionStart = 0;
                 mainText.SelectionLength = 0;
+
+                UpdateStatus("❌ No matches found");
             }
         }
         catch (Exception ex)
@@ -195,6 +202,12 @@ public partial class Dashboard : Form
         {
             mainText.Font = fontDialog.Font;
         }
+    }
+
+    private void statusTimer_Tick(object sender, EventArgs e)
+    {
+        systemStatus.Text = "Ready";
+        statusTimer.Stop();
     }
 
     private void Dashboard_FormClosing(object sender, FormClosingEventArgs e)
@@ -288,6 +301,8 @@ public partial class Dashboard : Form
 
             _isTextChanged = false;
             UpdateFileState(path);
+
+            UpdateStatus($"Opened: {_currentFileName}");
         }
         catch (Exception ex)
         {
@@ -308,11 +323,21 @@ public partial class Dashboard : Form
             _isTextChanged = false;
 
             UpdateFileState(path);
+
+            UpdateStatus("File saved");
         }
         catch (Exception ex)
         {
             MessageBox.Show($"Error saving file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+    }
+
+    private void UpdateStatus(string message)
+    {
+        systemStatus.Text = message;
+
+        statusTimer.Stop();
+        statusTimer.Start();
     }
     #endregion
 }

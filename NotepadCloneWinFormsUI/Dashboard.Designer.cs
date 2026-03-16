@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Dashboard));
             menuStrip = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
@@ -51,8 +52,12 @@
             findQuery = new TextBox();
             findLabel = new Label();
             fontDialog = new FontDialog();
+            statusStrip = new StatusStrip();
+            systemStatus = new ToolStripStatusLabel();
+            statusTimer = new System.Windows.Forms.Timer(components);
             menuStrip.SuspendLayout();
             findPanel.SuspendLayout();
+            statusStrip.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip
@@ -109,14 +114,14 @@
             // 
             findToolStripMenuItem.Name = "findToolStripMenuItem";
             findToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.F;
-            findToolStripMenuItem.Size = new Size(224, 32);
+            findToolStripMenuItem.Size = new Size(203, 32);
             findToolStripMenuItem.Text = "Find";
             findToolStripMenuItem.Click += findToolStripMenuItem_Click;
             // 
             // fontToolStripMenuItem
             // 
             fontToolStripMenuItem.Name = "fontToolStripMenuItem";
-            fontToolStripMenuItem.Size = new Size(224, 32);
+            fontToolStripMenuItem.Size = new Size(203, 32);
             fontToolStripMenuItem.Text = "Font";
             fontToolStripMenuItem.Click += fontToolStripMenuItem_Click;
             // 
@@ -165,7 +170,7 @@
             mainText.Multiline = true;
             mainText.Name = "mainText";
             mainText.ScrollBars = ScrollBars.Both;
-            mainText.Size = new Size(895, 515);
+            mainText.Size = new Size(895, 489);
             mainText.TabIndex = 2;
             mainText.TextChanged += mainText_TextChanged;
             // 
@@ -259,12 +264,34 @@
             findLabel.TabIndex = 0;
             findLabel.Text = "Find:";
             // 
+            // statusStrip
+            // 
+            statusStrip.ImageScalingSize = new Size(20, 20);
+            statusStrip.Items.AddRange(new ToolStripItem[] { systemStatus });
+            statusStrip.Location = new Point(0, 560);
+            statusStrip.Name = "statusStrip";
+            statusStrip.Size = new Size(895, 26);
+            statusStrip.TabIndex = 4;
+            statusStrip.Text = "statusStrip1";
+            // 
+            // systemStatus
+            // 
+            systemStatus.Name = "systemStatus";
+            systemStatus.Size = new Size(50, 20);
+            systemStatus.Text = "Ready";
+            // 
+            // statusTimer
+            // 
+            statusTimer.Interval = 3000;
+            statusTimer.Tick += statusTimer_Tick;
+            // 
             // Dashboard
             // 
             AutoScaleDimensions = new SizeF(11F, 28F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(895, 586);
             Controls.Add(mainText);
+            Controls.Add(statusStrip);
             Controls.Add(findPanel);
             Controls.Add(menuStrip);
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -274,10 +301,13 @@
             Name = "Dashboard";
             Text = "Notepad Clone by Muhammad Magdi";
             FormClosing += Dashboard_FormClosing;
+            Load += Dashboard_Load;
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();
             findPanel.ResumeLayout(false);
             findPanel.PerformLayout();
+            statusStrip.ResumeLayout(false);
+            statusStrip.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -305,5 +335,8 @@
         private CheckBox useRegularExpressions;
         private ToolStripMenuItem fontToolStripMenuItem;
         private FontDialog fontDialog;
+        private StatusStrip statusStrip;
+        private ToolStripStatusLabel systemStatus;
+        private System.Windows.Forms.Timer statusTimer;
     }
 }
