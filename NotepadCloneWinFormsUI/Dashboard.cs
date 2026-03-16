@@ -50,10 +50,13 @@ public partial class Dashboard : Form
     #region Events
     private void openToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        DialogResult result = MessageBox.Show("Opening a new file will discard unsaved changes. Do you want to continue?", "Confirm Open", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-        if (result == DialogResult.No)
+        if (_isTextChanged)
         {
-            return;
+            DialogResult result = MessageBox.Show("Opening a new file will discard unsaved changes. Do you want to continue?", "Confirm Open", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (result == DialogResult.No)
+            {
+                return;
+            }
         }
 
         using OpenFileDialog openFileDialog = new()
@@ -143,6 +146,9 @@ public partial class Dashboard : Form
         }
 
         findPanel.Visible ^= true;
+
+        findQuery.Text = string.Empty;
+        findQuery.Focus();
     }
 
     private void findNext_Click(object sender, EventArgs e)
