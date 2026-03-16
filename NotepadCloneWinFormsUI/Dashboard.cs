@@ -188,6 +188,15 @@ public partial class Dashboard : Form
         findPanel.Visible = false;
     }
 
+    private void fontToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        DialogResult result = fontDialog.ShowDialog();
+        if (result == DialogResult.OK)
+        {
+            mainText.Font = fontDialog.Font;
+        }
+    }
+
     private void Dashboard_FormClosing(object sender, FormClosingEventArgs e)
     {
         if (_isChangingTheme)
@@ -305,5 +314,5 @@ public partial class Dashboard : Form
             MessageBox.Show($"Error saving file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
-    #endregion 
+    #endregion
 }

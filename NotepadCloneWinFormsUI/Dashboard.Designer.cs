@@ -36,6 +36,7 @@
             saveAsToolStripMenuItem = new ToolStripMenuItem();
             editToolStripMenuItem = new ToolStripMenuItem();
             findToolStripMenuItem = new ToolStripMenuItem();
+            fontToolStripMenuItem = new ToolStripMenuItem();
             viewToolStripMenuItem = new ToolStripMenuItem();
             themeToolStripMenuItem = new ToolStripMenuItem();
             lightToolStripMenuItem = new ToolStripMenuItem();
@@ -49,6 +50,7 @@
             wrapAround = new CheckBox();
             findQuery = new TextBox();
             findLabel = new Label();
+            fontDialog = new FontDialog();
             menuStrip.SuspendLayout();
             findPanel.SuspendLayout();
             SuspendLayout();
@@ -98,7 +100,7 @@
             // 
             // editToolStripMenuItem
             // 
-            editToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { findToolStripMenuItem });
+            editToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { findToolStripMenuItem, fontToolStripMenuItem });
             editToolStripMenuItem.Name = "editToolStripMenuItem";
             editToolStripMenuItem.Size = new Size(60, 32);
             editToolStripMenuItem.Text = "Edit";
@@ -107,9 +109,16 @@
             // 
             findToolStripMenuItem.Name = "findToolStripMenuItem";
             findToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.F;
-            findToolStripMenuItem.Size = new Size(203, 32);
+            findToolStripMenuItem.Size = new Size(224, 32);
             findToolStripMenuItem.Text = "Find";
             findToolStripMenuItem.Click += findToolStripMenuItem_Click;
+            // 
+            // fontToolStripMenuItem
+            // 
+            fontToolStripMenuItem.Name = "fontToolStripMenuItem";
+            fontToolStripMenuItem.Size = new Size(224, 32);
+            fontToolStripMenuItem.Text = "Font";
+            fontToolStripMenuItem.Click += fontToolStripMenuItem_Click;
             // 
             // viewToolStripMenuItem
             // 
@@ -294,5 +303,7 @@
         private Button closeFindPanel;
         private Button findNext;
         private CheckBox useRegularExpressions;
+        private ToolStripMenuItem fontToolStripMenuItem;
+        private FontDialog fontDialog;
     }
 }
